@@ -10,8 +10,6 @@ type MenuItem = {
   description?: string | null;
 };
 
-const heroImg =
-  'https://images.pexels.com/photos/15115648/pexels-photo-15115648.jpeg'; // croissant vibe
 const drinkImg =
   'https://images.pexels.com/photos/8679422/pexels-photo-8679422.jpeg';
 

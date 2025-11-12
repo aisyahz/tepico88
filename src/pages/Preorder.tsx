@@ -28,7 +28,7 @@ export default function Preorder() {
   useEffect(() => {
     loadMenu();
     loadOrders();
-
+  
     const ch = supabase
       .channel('public:preorders')
       .on(
@@ -37,9 +37,13 @@ export default function Preorder() {
         (payload) => setOrders((prev) => [payload.new as PreorderRow, ...prev])
       )
       .subscribe();
-
-    return () => supabase.removeChannel(ch);
+  
+    //  Make cleanup synchronous
+    return () => {
+      void supabase.removeChannel(ch);
+    };
   }, []);
+  
 
   async function loadMenu() {
     const { data } = await supabase

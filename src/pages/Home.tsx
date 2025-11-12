@@ -173,7 +173,7 @@ export default function Home() {
                 Perfect for lepak with friends — bundle food + drinks, jimat &
                 cepat.
               </div>
-              <a href="/preorder" className="btn-outline">
+              <a href="https://tepico88.netlify.app/preorder" className="btn-outline">
                 Order a Combo
               </a>
             </div>

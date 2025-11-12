@@ -68,28 +68,44 @@ export default function Manage() {
 
   useEffect(() => {
     loadOrders();
-
-    const channel = supabase
-      .channel('preorders-realtime')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'preorders' },
-        (payload) => loadOrders()
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'preorders' },
-        (payload) =>
-          setOrders((prev) =>
-            prev.map((o) =>
-              o.id === payload.new.id ? (payload.new as PreorderRow) : o
-            )
-          )
-      )
-      .subscribe();
-
-    return () => supabase.removeChannel(channel);
+  
+    const setupRealtime = async () => {
+      const channel = supabase
+        .channel('preorders-realtime')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'preorders' },
+          (payload) => {
+            console.log('🆕 New order', payload.new);
+            loadOrders();
+          }
+        )
+        .on(
+          'postgres_changes',
+          { event: 'UPDATE', schema: 'public', table: 'preorders' },
+          (payload) => {
+            console.log('🔄 Order updated', payload.new);
+            setOrders((prev) =>
+              prev.map((o) =>
+                o.id === payload.new.id ? (payload.new as PreorderRow) : o
+              )
+            );
+          }
+        )
+        .subscribe();
+  
+      // Cleanup on unmount
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    };
+  
+    // call setup without making useEffect itself async
+    setupRealtime();
+  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
 
   async function loadOrders() {
     const { data } = await supabase

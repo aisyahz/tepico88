@@ -17,7 +17,7 @@ type PreorderRow = {
   menu_items?: MenuItem;
 };
 
-// ✅ Move SalesSummary OUTSIDE Manage()
+// ✅ Define outside main component
 function SalesSummary({ orders, target }: { orders: PreorderRow[]; target: number }) {
   const completedOrders = orders.filter(
     (o) => o.status === 'ready' || o.status === 'collected'
@@ -26,9 +26,7 @@ function SalesSummary({ orders, target }: { orders: PreorderRow[]; target: numbe
     const price = o.menu_items?.price || 0;
     return sum + price * o.quantity;
   }, 0);
-
   const percent = Math.min((totalSales / target) * 100, 100).toFixed(1);
-
   return (
     <div className="sales-summary card">
       <h3>🎯 Target Sales Progress</h3>
@@ -46,11 +44,10 @@ function SalesSummary({ orders, target }: { orders: PreorderRow[]; target: numbe
 }
 
 export default function Manage() {
-  // ✅ Simple password protection
   const [isAuthed, setIsAuthed] = useState(false);
   const [password, setPassword] = useState('');
   const correctPassword =
-    (window as any)._env_?.VITE_ADMIN_PASS || ['tepi', 'co2025'].join('');
+    (window as any)._env_?.VITE_ADMIN_PASS || 'tepico2025';
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,14 +64,12 @@ export default function Manage() {
     localStorage.removeItem('tepi_auth');
   };
 
-  // ✅ Auto-login if already verified
   useEffect(() => {
     if (localStorage.getItem('tepi_auth') === 'true') {
       setIsAuthed(true);
     }
   }, []);
 
-  // 🔒 If not logged in
   if (!isAuthed) {
     return (
       <section className="section">
@@ -98,10 +93,10 @@ export default function Manage() {
     );
   }
 
-  // ✅ Proceed with order management
   const [orders, setOrders] = useState<PreorderRow[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // ✅ FIXED useEffect — not async anymore
   useEffect(() => {
     loadOrders();
 
@@ -112,7 +107,7 @@ export default function Manage() {
         { event: 'INSERT', schema: 'public', table: 'preorders' },
         (payload) => {
           console.log('🆕 New order', payload.new);
-          loadOrders();
+          setOrders((prev) => [payload.new as PreorderRow, ...prev]);
         }
       )
       .on(
@@ -137,6 +132,7 @@ export default function Manage() {
       )
       .subscribe();
 
+    // ✅ Proper cleanup
     return () => {
       supabase.removeChannel(channel);
     };
@@ -147,7 +143,6 @@ export default function Manage() {
       .from('preorders')
       .select('*, menu_items(*)')
       .order('created_at', { ascending: false });
-
     if (!error) setOrders((data as PreorderRow[]) || []);
     setLoading(false);
   }
@@ -175,9 +170,7 @@ export default function Manage() {
         <SalesSummary orders={orders} target={500} />
 
         {loading && <div className="muted">Loading orders…</div>}
-        {!loading && orders.length === 0 && (
-          <div className="muted">No orders yet.</div>
-        )}
+        {!loading && orders.length === 0 && <div className="muted">No orders yet.</div>}
 
         {orders.map((o) => (
           <div className="card order-manage" key={o.id}>

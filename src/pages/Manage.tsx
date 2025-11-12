@@ -22,7 +22,8 @@ export default function Manage() {
   const [isAuthed, setIsAuthed] = useState(false);
   const [password, setPassword] = useState('');
   const correctPassword =
-  import.meta.env.VITE_ADMIN_PASS || ['tepi', 'co2025'].join('');
+  (window as any)._env_?.VITE_ADMIN_PASS || ['tepi', 'co2025'].join('');
+
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

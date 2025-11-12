@@ -25,8 +25,8 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="https://tepico88.netlify.app/preorder" element={<Preorder />} />
-          <Route path="https://tepico88.netlify.app/manage" element={<Manage />} /> {}
+          <Route path="/preorder" element={<Preorder />} />
+          <Route path="/manage" element={<Manage />} /> {/* 👈 add this line */}
         </Routes>
       </main>
 

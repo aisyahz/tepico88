@@ -17,13 +17,40 @@ type PreorderRow = {
   menu_items?: MenuItem;
 };
 
+// ✅ Move SalesSummary OUTSIDE Manage()
+function SalesSummary({ orders, target }: { orders: PreorderRow[]; target: number }) {
+  const completedOrders = orders.filter(
+    (o) => o.status === 'ready' || o.status === 'collected'
+  );
+  const totalSales = completedOrders.reduce((sum, o) => {
+    const price = o.menu_items?.price || 0;
+    return sum + price * o.quantity;
+  }, 0);
+
+  const percent = Math.min((totalSales / target) * 100, 100).toFixed(1);
+
+  return (
+    <div className="sales-summary card">
+      <h3>🎯 Target Sales Progress</h3>
+      <div className="progress-bar">
+        <div className="progress-fill" style={{ width: `${percent}%` }}></div>
+      </div>
+      <p>
+        <strong>RM{totalSales.toFixed(2)}</strong> / RM{target.toFixed(2)} ({percent}%)
+      </p>
+      <p className="tiny muted">
+        Keep it up! You need RM{Math.max(target - totalSales, 0).toFixed(2)} more 💪
+      </p>
+    </div>
+  );
+}
+
 export default function Manage() {
   // ✅ Simple password protection
   const [isAuthed, setIsAuthed] = useState(false);
   const [password, setPassword] = useState('');
   const correctPassword =
-  (window as any)._env_?.VITE_ADMIN_PASS || ['tepi', 'co2025'].join('');
-
+    (window as any)._env_?.VITE_ADMIN_PASS || ['tepi', 'co2025'].join('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +60,11 @@ export default function Manage() {
     } else {
       alert('Incorrect password 😢');
     }
+  };
+
+  const handleLogout = () => {
+    setIsAuthed(false);
+    localStorage.removeItem('tepi_auth');
   };
 
   // ✅ Auto-login if already verified
@@ -48,7 +80,9 @@ export default function Manage() {
       <section className="section">
         <div className="container narrow">
           <h1 className="section-title">🔒 Staff Login</h1>
-          <p className="muted">Enter your admin password to access the management page.</p>
+          <p className="muted">
+            Enter your admin password to access the management page.
+          </p>
           <form onSubmit={handleLogin} className="card">
             <input
               type="password"
@@ -64,57 +98,57 @@ export default function Manage() {
     );
   }
 
-  // ✅ Proceed with order management (your original code below)
+  // ✅ Proceed with order management
   const [orders, setOrders] = useState<PreorderRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadOrders();
-  
-    const setupRealtime = async () => {
-      const channel = supabase
-        .channel('preorders-realtime')
-        .on(
-          'postgres_changes',
-          { event: 'INSERT', schema: 'public', table: 'preorders' },
-          (payload) => {
-            console.log('🆕 New order', payload.new);
-            loadOrders();
-          }
-        )
-        .on(
-          'postgres_changes',
-          { event: 'UPDATE', schema: 'public', table: 'preorders' },
-          (payload) => {
-            console.log('🔄 Order updated', payload.new);
-            setOrders((prev) =>
-              prev.map((o) =>
-                o.id === payload.new.id ? (payload.new as PreorderRow) : o
-              )
-            );
-          }
-        )
-        .subscribe();
-  
-      // Cleanup on unmount
-      return () => {
-        supabase.removeChannel(channel);
-      };
+
+    const channel = supabase
+      .channel('preorders-realtime')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'preorders' },
+        (payload) => {
+          console.log('🆕 New order', payload.new);
+          loadOrders();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'preorders' },
+        (payload) => {
+          console.log('🔄 Order updated', payload.new);
+          setOrders((prev) =>
+            prev.map((o) =>
+              o.id === payload.new.id ? (payload.new as PreorderRow) : o
+            )
+          );
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'DELETE', schema: 'public', table: 'preorders' },
+        (payload) => {
+          console.log('❌ Order deleted', payload.old);
+          setOrders((prev) => prev.filter((o) => o.id !== payload.old.id));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
     };
-  
-    // call setup without making useEffect itself async
-    setupRealtime();
-  
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
 
   async function loadOrders() {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('preorders')
       .select('*, menu_items(*)')
       .order('created_at', { ascending: false });
-    setOrders((data as PreorderRow[]) || []);
+
+    if (!error) setOrders((data as PreorderRow[]) || []);
     setLoading(false);
   }
 
@@ -127,37 +161,24 @@ export default function Manage() {
     else loadOrders();
   }
 
-  function SalesSummary({ orders, target }: { orders: any[]; target: number }) {
-    const completedOrders = orders.filter(
-      (o) => o.status === 'ready' || o.status === 'collected'
-    );
-    const totalSales = completedOrders.reduce((sum, o) => {
-      const price = o.menu_items?.price || 0;
-      return sum + price * o.quantity;
-    }, 0);
-    const percent = Math.min((totalSales / target) * 100, 100).toFixed(1);
-    return (
-      <div className="sales-summary card">
-        <h3>🎯 Target Sales Progress</h3>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${percent}%` }}></div>
-        </div>
-        <p>
-          <strong>RM{totalSales.toFixed(2)}</strong> / RM{target.toFixed(2)} (
-          {percent}%)
-        </p>
-      </div>
-    );
-  }
-
   return (
     <section className="section">
       <div className="container wide">
-        <h1 className="section-title">🍽 Order Management</h1>
+        <div className="flex-space-between">
+          <h1 className="section-title">🍽 Order Management</h1>
+          <button className="btn-outline small" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+
         <p className="muted">Mark orders as Preparing, Ready, or Collected.</p>
         <SalesSummary orders={orders} target={500} />
+
         {loading && <div className="muted">Loading orders…</div>}
-        {!loading && orders.length === 0 && <div className="muted">No orders yet.</div>}
+        {!loading && orders.length === 0 && (
+          <div className="muted">No orders yet.</div>
+        )}
+
         {orders.map((o) => (
           <div className="card order-manage" key={o.id}>
             <div className="order-info">

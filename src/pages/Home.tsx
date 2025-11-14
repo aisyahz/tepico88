@@ -86,7 +86,7 @@ useEffect(() => {
 
       {/* Background avatar */}
       <img
-        src="https://i.pinimg.com/736x/80/ea/1b/80ea1b86a38055a1c0a6d05a0b685e5d.jpg"
+        src="https://images.unsplash.com/vector-1756550631103-d5308a9d3e2c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGN1dGUlMjBjYXQlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fHww"
         className="bg-avatar"
         alt="cute cat bg"
       />
@@ -127,13 +127,14 @@ useEffect(() => {
       <div className="gallery-grid desktop-only">
 
         {[
-          { url: "https://i.postimg.cc/v4MM1ZNT/pasta.jpg", label: "Spaghetti Alfredo Chicken" },
-          { url: "https://i.postimg.cc/yJsFrcrN/popia.jpg", label: "Popia Ramen Cheezy" },
-          { url: "https://i.postimg.cc/ZCNpbV1G/croissant.jpg", label: "Buttery Croissant" },
-          { url: "https://i.postimg.cc/ygW3wPmG/combo-pasta.jpg", label: "Combo Pasta + Drink" },
-          { url: "https://i.postimg.cc/jDXW29Zb/combo-nasi.jpg", label: "Combo Nasi Lemak + Drink" },
-          { url: "https://i.postimg.cc/rD8mBjcz/drink.jpg", label: "House Drinks" }
-        ].map((item, i) => (
+  { url: "https://xqlmlviqovsaqrypgpmo.supabase.co/storage/v1/object/public/menu/Pasta.jpeg", label: "Spaghetti Alfredo Chicken" },
+  { url: "https://xqlmlviqovsaqrypgpmo.supabase.co/storage/v1/object/public/menu/Popia.jpeg", label: "Popia Ramen Cheezy" },
+  { url: "https://xqlmlviqovsaqrypgpmo.supabase.co/storage/v1/object/public/menu/Croissant2.jpeg", label: "Buttery Croissant" },
+  { url: "https://xqlmlviqovsaqrypgpmo.supabase.co/storage/v1/object/public/menu/ComboPasta.jpeg", label: "Combo Pasta + Drink" },
+  { url: "https://xqlmlviqovsaqrypgpmo.supabase.co/storage/v1/object/public/menu/ComboNasiAir.jpeg", label: "Combo Nasi Lemak + Drink" },
+  { url: "https://xqlmlviqovsaqrypgpmo.supabase.co/storage/v1/object/public/menu/Drinks.jpeg", label: "House Drinks" }
+]
+.map((item, i) => (
           <div className="gallery-card" key={i}>
             <div className="img-wrap">
               <img src={item.url} alt={item.label} />

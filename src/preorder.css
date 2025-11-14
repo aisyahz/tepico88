@@ -1,0 +1,252 @@
+.preorder-page {
+    background: #faf3eb;
+  }
+  
+  /* Form card tweaks */
+  .preorder-form {
+    border-radius: 18px;
+    background: #fffaf3;
+    border: 1px solid #f0dfc5;
+  }
+  
+  /* Menu sections */
+  .menu-section {
+    margin-top: 1.8rem;
+  }
+  
+  .menu-section-title {
+    margin-bottom: 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  /* Menu list + option */
+  .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .menu-option {
+    padding: 0.75rem 0.9rem;
+    border-radius: 14px;
+    border: 1px solid #ead7c4;
+    background: #fffdf8;
+    transition: background 0.15s ease, border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+  
+  .menu-option.selected {
+    border-color: #e1c096;
+    background: #fff6e6;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  }
+  
+  .menu-option-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .menu-option-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .menu-option-main strong {
+    font-weight: 600;
+  }
+  
+  .menu-option-price {
+    font-weight: 600;
+  }
+  
+  .menu-option-desc {
+    margin-top: 0.2rem;
+  }
+  
+  /* Footer: category + qty controls */
+  .menu-option-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.25rem;
+  }
+  
+  /* Qty controls */
+  .qty-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .qty-btn {
+    border: none;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background: #f2dfc8;
+  }
+  
+  .qty-btn.add {
+    background: #f0d1a3;
+    font-weight: 600;
+  }
+  
+  .qty-btn:hover {
+    filter: brightness(0.96);
+  }
+  
+  .qty-display {
+    min-width: 1.6rem;
+    text-align: center;
+  }
+  
+  /* Floating cart bar */
+  .preorder-cart-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0.75rem;
+    margin: 0 auto;
+    max-width: 520px;
+    padding: 0.55rem 0.9rem;
+    border-radius: 999px;
+    background: #f7e7d3;
+    border: 1px solid #e4cfb4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 40;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+  }
+  
+  .cart-bar-line {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .cart-bar-sub {
+    font-size: 0.8rem;
+    color: #6b5c4a;
+  }
+  
+  .cart-bar-btn {
+    border-radius: 999px;
+    padding-inline: 1rem;
+  }
+  
+  /* Receipt modal */
+  .receipt-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
+  }
+  
+  .receipt-modal {
+    background: #fffaf3;
+    border-radius: 18px;
+    max-width: 640px;
+    width: 100%;
+    padding: 1.3rem 1.4rem 1rem;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid #e5d1b8;
+  }
+  
+  .receipt-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+  
+  .receipt-header {
+    margin-bottom: 0.6rem;
+  }
+  
+  .receipt-body {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+    margin-bottom: 0.75rem;
+  }
+  
+  .receipt-left {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .receipt-items {
+    margin-top: 0.4rem;
+    border-top: 1px dashed #d3bfa6;
+    padding-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  
+  .receipt-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+  
+  .receipt-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid #cfa977;
+  }
+  
+  /* Right side with cat gif */
+  .receipt-right {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  
+  .cat-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #f0d1a3;
+    background: #f8e6ce;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .cat-circle img {
+    width: 110%;
+    height: auto;
+  }
+  
+  /* Buttons (reuse existing classes but ensure full width) */
+  .btn-secondary.full {
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+  
+  /* Small screen tweaks */
+  @media (max-width: 600px) {
+    .receipt-body {
+      flex-direction: column;
+    }
+  
+    .preorder-cart-bar {
+      max-width: 100%;
+      border-radius: 18px;
+    }
+  }
+  

@@ -1,13 +1,16 @@
 :root {
-  --bg: #f8f9fc;
-  --card: #fff;
-  --ink: #111;
-  --muted: #6b768a;
-  --brand: #3a76f0;
-  --brand-ink: #1749c6;
-  --soft: #eef3ff;
-  --line: #e9edf5;
+  --bg: #faf3eb;       /* body background (cream) */
+  --card: #ffffff;     /* white cards */
+  --ink: #3c2f23;      /* deep brown text */
+  --muted: #7a6e62;    /* muted brown/grey */
+  
+  /* 🌿 NEW BRAND COLORS (replace blue) */
+  --brand: #e7c9a9;        /* warm beige button */
+  --brand-ink: #b48b5a;    /* darker beige hover */
+  --soft: #f4e6d8;         /* soft cream backgrounds */
+  --line: #e3d2c3;         /* warm border lines */
 }
+
 
 * {
   box-sizing: border-box;
@@ -97,6 +100,18 @@ body {
   display: inline-block;
   margin-top: 8px;
 }
+.btn-primary,
+.btn-outline {
+  font-weight: 700;
+  color: #3c2f23 !important;
+}
+.btn-primary:hover {
+  background: #d7b894;
+}
+.btn-outline:hover {
+  background: #f1e3d4;
+}
+
 .full {
   width: 100%;
 }
@@ -747,3 +762,51 @@ body {
   90% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -10px); }
 }
+.menu-section {
+  margin-top: 2rem;
+}
+
+.menu-section-title {
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.menu-option-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-option-price {
+  text-align: right;
+}
+
+.menu-option .tiny {
+  font-size: 0.75rem;
+  color: #777;
+}
+.menu-section {
+  margin-top: 2rem;
+}
+
+.menu-option-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-option-info .small {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.menu-option-price {
+  text-align: right;
+  font-weight: bold;
+}
+
+.menu-option .tiny {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 4px;
+}
+
